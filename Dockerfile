@@ -8,6 +8,10 @@ ENV php_vars /usr/local/etc/php/conf.d/docker-vars.ini
 
 ENV NGINX_VERSION 1.11.10
 
+RUN echo https://mirror.tuna.tsinghua.edu.cn/alpine/edge/main > /etc/apk/repositories && \
+    echo /etc/apk/respositories && \
+    apk update
+
 RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
   && CONFIG="\
     --prefix=/etc/nginx \
@@ -131,11 +135,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
   && ln -sf /dev/stdout /var/log/nginx/access.log \
   && ln -sf /dev/stderr /var/log/nginx/error.log
 
-RUN echo https://mirror.tuna.tsinghua.edu.cn/alpine/edge/main > /etc/apk/repositories && \
-#    sed -i -e "s/v3.4/edge/" /etc/apk/repositories && \
-    echo /etc/apk/respositories && \
-    apk update && \
-    apk add --no-cache bash \
+RUN apk add --no-cache bash \
     openssh-client \
     wget \
     supervisor \
