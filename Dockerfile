@@ -1,6 +1,6 @@
-FROM php:7.1.2-fpm-alpine
+FROM php:7.1.3-fpm-alpine
 
-MAINTAINER ngineered <support@ngineered.co.uk>
+MAINTAINER yifanes <yifanes@qq.com>
 
 ENV php_conf /usr/local/etc/php-fpm.conf
 ENV fpm_conf /usr/local/etc/php-fpm.d/www.conf
@@ -131,7 +131,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
   && ln -sf /dev/stdout /var/log/nginx/access.log \
   && ln -sf /dev/stderr /var/log/nginx/error.log
 
-RUN echo @testing http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories && \
+RUN echo https://mirror.tuna.tsinghua.edu.cn/alpine/edge/main > /etc/apk/repositories && \
 #    sed -i -e "s/v3.4/edge/" /etc/apk/repositories && \
     echo /etc/apk/respositories && \
     apk update && \
@@ -166,6 +166,9 @@ RUN echo @testing http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repo
       --with-freetype-dir=/usr/include/ \
       --with-png-dir=/usr/include/ \
       --with-jpeg-dir=/usr/include/ && \
+    #php mongodb
+    pecl install mongodb && \
+    docker-php-ext-enable mongodb && \
     #curl iconv session
     docker-php-ext-install pdo_mysql pdo_sqlite mysqli mcrypt gd exif intl xsl json soap dom zip opcache && \
     docker-php-source delete && \
